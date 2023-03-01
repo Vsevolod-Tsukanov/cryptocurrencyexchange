@@ -1,15 +1,22 @@
 # Особенности приложении
 
 1)Приложение использует базу данных H2
+
 2)Приложение использует flyway миграции,чтобы определить схему базы данных и заполнить её некоторыми тестовыми данными.
+
 3)Приложение использует Spring Security на основе `Spring Security Login Form`.(**_доп задание_**)
+
 4)Разграничение доступа реализовано на основе `GrantedAuthority`
+
 5)Сущности получаются из базы в виде Графов(EntityGraph)
+
 6)Настроен Swagger,url = `http://localhost:8080/swagger-ui/index.html` .(**_доп задание_**)
+
 7)Настроена валидация DTO
+
 7)В базе лежат два пользователя: 
 ADMIN с никнеймом admin и паролем admin,а также полным доступом к эндпоинтам
-USER с никнеймом user и паролем user с ограниченным доступом
+ и USER с никнеймом user и паролем user с ограниченным доступом
 # Выполненные задания
 
 ## _API ДЛЯ ПОЛЬЗОВАТЕЛЯ_
@@ -19,13 +26,16 @@ USER с никнеймом user и паролем user с ограниченны
 URL = `http://localhost:8080/user`
 
 Запрос: 
+
 `   {    
   "userName": "TestUser",   
   "email": "mytest@mail.ru",    
   "password": "user"        
 }`
 
-Ответ: `"4b63059d-7b09-4e8f-8c44-7810889897da"`
+Ответ:
+
+`"4b63059d-7b09-4e8f-8c44-7810889897da"`
 
 В случае если userName или email не уникальны:
 
@@ -34,9 +44,11 @@ URL = `http://localhost:8080/user`
 URL = `http://localhost:8080/cryptoWallet/balance/{walletOwnerId}`
 
 Запрос:
+
 `http://localhost:8080/cryptoWallet/balance/3fd610fa-315c-4813-9a64-6eb453b44f88`
 
 Ответ:
+
 `{
   "balance": 1000000,
   "cryptoCounts": [
@@ -56,6 +68,7 @@ URL = `http://localhost:8080/cryptoWallet/balance/{walletOwnerId}`
 URL = `http://localhost:8080/cryptoWallet/balance`
 
 Запрос:
+
 `{
   "secretKey": "e4849d3b-625f-4a37-b860-e70415ae8dce",
   "amountToReplenishTheBalance": 2222
@@ -78,6 +91,7 @@ URL = `http://localhost:8080/cryptoWallet/balance`
  URL = `http://localhost:8080/cryptoWallet/transfer`
 
 Запрос:
+
 `{
   "walletOwnerSecretKey": "e4849d3b-625f-4a37-b860-e70415ae8dce",
   "money": 1500,
@@ -93,9 +107,12 @@ URL = `http://localhost:8080/cryptoWallet/balance`
        
 ### 5)Просмотр курса валют
 
-Запрос на URL = `http://localhost:8080/cryptoCurrency/`
+Запрос на URL = 
+
+`http://localhost:8080/cryptoCurrency/`
 
 Ответ:
+
 `[
   {
     "abbreviation": "BTC",
@@ -117,8 +134,12 @@ URL = `http://localhost:8080/cryptoWallet/balance`
 
 ### 6)Обмен валют по установленному курсу(POST)
 
-URL для продажи = `http://localhost:8080/cryptoWallet/currency/sale`
-URL для покупки = `http://localhost:8080/cryptoWallet/currency/purchase`
+URL для продажи = 
+`http://localhost:8080/cryptoWallet/currency/sale`
+
+URL для покупки =
+
+`http://localhost:8080/cryptoWallet/currency/purchase`
 
 Стоимость закрепляется за каждой валютой.Реализованы два эндпоинта на покупку и продажу криптовалюты 
 
@@ -197,7 +218,7 @@ URL = `http://localhost:8080/cryptoCurrency/`
 
 ### 3)Посмотреть количество операций, которые были проведены за указанный период(например, за последние сутки)(**POST**).
 
-URL = `http://localhost:8080/log/
+URL = `http://localhost:8080/log/`
 
 Я создал таблицу `log_schema.operation_detail` 
 в которую сохраняю ID того,кто выполнил эту операцию,ее краткое описание,баланс после выполнения операции и время когда была выполнена операция. 
