@@ -1,0 +1,489 @@
+openapi: 3.0.1
+info:
+  title: Криптобиржа для стажировки РЭЛЭКС
+  version: v1
+servers:
+  - url: http://localhost:8080
+    description: Server url
+paths:
+  /user:
+    get:
+      tags:
+        - user-controller
+      summary: "Получить Всех Пользователей Биржи"
+      description: ""
+      operationId: getAllUsers
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserResponse'
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ValidationErrorResponse'
+    post:
+      tags:
+        - user-controller
+      summary: "Зарегистрировать Пользователя На Бирже"
+      description: "Пустой Кошелек Открывается Автоматически"
+      operationId: registerUser
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserRequestWithoutId'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string
+                format: uuid
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ValidationErrorResponse'
+  /log:
+    post:
+      tags:
+        - operation-detail-controller
+      summary: "Получить Запись Всех Операций На Бирже Между Указанными Промежутками"
+      description: ""
+      operationId: getAllOperationDetailsBetween
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OperationDetailRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/OperationDetail'
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ValidationErrorResponse'
+  /log/count:
+    post:
+      tags:
+        - operation-detail-controller
+      summary: "Получить Количество Всех Операций На Бирже Между Указанными Промежутками"
+      description: ""
+      operationId: getOperationCountBetween
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OperationDetailRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: numeric
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ValidationErrorResponse'
+  /cryptoWallet/transfer:
+    post:
+      tags:
+        - crypto-wallet-controller
+      summary: "Перевести Деньги На Карту"
+      description: ""
+      operationId: transferMoneyToCard
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CryptoWalletRequestToTransferToCard'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/CryptoWalletResponseForTransfer'
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ValidationErrorResponse'
+  /cryptoWallet/currency/sale:
+    post:
+      tags:
+        - crypto-wallet-controller
+      summary: "Продать Криптовалюту"
+      description: ""
+      operationId: sellCryptoCurrency
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CryptoWalletRequestToExchange'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/CryptoWalletResponseForExchange'
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ValidationErrorResponse'
+  /cryptoWallet/currency/purchase:
+    post:
+      tags:
+        - crypto-wallet-controller
+      summary: "Купить Криптовалюту"
+      description: ""
+      operationId: buyCryptoCurrency
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CryptoWalletRequestToExchange'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/CryptoWalletResponseForExchange'
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ValidationErrorResponse'
+  /cryptoWallet/balance:
+    post:
+      tags:
+        - crypto-wallet-controller
+      summary: "Пополнить Баланс"
+      description: ""
+      operationId: topUpTheBalance
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CryptoWalletRequestToReplenish'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/CryptoWalletResponse'
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ValidationErrorResponse'
+  /cryptoCurrency:
+    get:
+      tags:
+        - crypto-currency-controller
+      summary: "Получение Курса Валют"
+      description: ""
+      operationId: getAllCryptoCurrencies
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CryptoCurrencyResponse'
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ValidationErrorResponse'
+    post:
+      tags:
+        - crypto-currency-controller
+      summary: "Изменить Стоимость Криптовалюты"
+      description: ""
+      operationId: changeCryptoCurrencyValue
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CryptoCurrencyRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/CryptoCurrencyResponse'
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ValidationErrorResponse'
+  /cryptoWallet/balance/{walletOwnerId}:
+    get:
+      tags:
+        - crypto-wallet-controller
+      summary: "Показать Баланс Кошелька"
+      description: ""
+      operationId: showBalance
+      parameters:
+        - name: walletOwnerId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+            example: e4849d3b-625f-4a37-b860-e70415ae8dce
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/CryptoWalletResponse'
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ValidationErrorResponse'
+  /cryptoWallet/balance/total/{abbr}:
+    get:
+      tags:
+        - crypto-wallet-controller
+      summary: "Получить Общий Баланс Всех Пользователей Биржи"
+      description: "В криптовалюте или рублях"
+      operationId: getTotalBalance
+      parameters:
+        - name: abbr
+          in: path
+          required: true
+          schema:
+            type: string
+            example: BTC
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: number
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ValidationErrorResponse'
+components:
+  schemas:
+    ValidationErrorResponse:
+      type: object
+      properties:
+        violations:
+          type: array
+          items:
+            $ref: '#/components/schemas/Violation'
+    Violation:
+      type: object
+      properties:
+        fieldName:
+          type: string
+        message:
+          type: string
+    UserRequestWithoutId:
+      required:
+        - email
+        - password
+        - userName
+      type: object
+      properties:
+        userName:
+          type: string
+          example: TestUser
+        email:
+          type: string
+          example: mytest@mail.ru
+        password:
+          type: string
+          example: user
+    OperationDetailRequest:
+      type: object
+      properties:
+        dateFrom:
+          type: string
+          example: 2020-01-01
+          format: date
+        dateTo:
+          type: string
+          example: 2023-01-01
+          format: date
+    OperationDetail:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        operationPerformerId:
+          type: string
+          format: uuid
+        operationType:
+          type: string
+        callbackTime:
+          type: string
+          format: date
+        balanceAfterOperation:
+          type: number
+    CryptoWalletRequestToTransferToCard:
+      type: object
+      properties:
+        walletOwnerSecretKey:
+          type: string
+          format: uuid
+          example: e4849d3b-625f-4a37-b860-e70415ae8dce
+        money:
+          minimum: 0
+          exclusiveMinimum: false
+          type: number
+          example: 10000
+        creditCard:
+          pattern: '[0-9]{4}[- .]?[0-9]{4}[- .]?[0-9]{4}[- .]?[0-9]{4}'
+          type: string
+          example: 1234 5678 1323 4456
+    CryptoWalletRequestToExchange:
+      required:
+        - amountFrom
+        - currencyAbbreviation
+      type: object
+      properties:
+        secretKey:
+          type: string
+          format: uuid
+          example: e4849d3b-625f-4a37-b860-e70415ae8dce
+        currencyAbbreviation:
+          pattern: '[A-Za-z]{3}'
+          type: string
+          example: BTC
+        amountFrom:
+          minimum: 0
+          exclusiveMinimum: false
+          type: number
+          example: 10000
+    CryptoWalletResponseForExchange:
+      type: object
+      properties:
+        currencyAbbreviation:
+          type: string
+        amountFrom:
+          type: number
+        amountTo:
+          type: number
+        balanceAfterOperation:
+          type: number
+        cryptoBalanceAfterOperation:
+          type: number
+    CryptoWalletResponseForTransfer:
+      type: object
+      properties:
+        balance:
+          type: number
+    CryptoWalletRequestToReplenish:
+      type: object
+      properties:
+        secretKey:
+          type: string
+          format: uuid
+          example: e4849d3b-625f-4a37-b860-e70415ae8dce
+        amountToReplenishTheBalance:
+          minimum: 0
+          exclusiveMinimum: false
+          type: number
+          example: 1500
+    CryptoCountResponse:
+      type: object
+      properties:
+        currencyAbbreviation:
+          type: string
+        cryptoBalance:
+          type: number
+    CryptoWalletResponse:
+      type: object
+      properties:
+        balance:
+          type: number
+        cryptoCounts:
+          type: array
+          items:
+            $ref: '#/components/schemas/CryptoCountResponse'
+    CryptoCurrencyRequest:
+      required:
+        - abbreviation
+      type: object
+      properties:
+        abbreviation:
+          pattern: '[A-Z]{3}'
+          type: string
+          example: BTC
+        newCurrencyValue:
+          minimum: 0
+          exclusiveMinimum: false
+          type: number
+          example: 500000
+    CryptoCurrencyResponse:
+      type: object
+      properties:
+        abbreviation:
+          type: string
+        value:
+          type: number
+    UserResponse:
+      type: object
+      properties:
+        secretKey:
+          type: string
+          format: uuid
+        userName:
+          type: string
+        email:
+          type: string
+        role:
+          type: string
