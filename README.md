@@ -37,8 +37,6 @@ URL = `http://localhost:8080/user`
 
 `"4b63059d-7b09-4e8f-8c44-7810889897da"`
 
-В случае если userName или email не уникальны:
-
 ### 2)Просмотр баланса своего кошелька(**GET**)
 
 URL = `http://localhost:8080/cryptoWallet/balance/{walletOwnerId}`
